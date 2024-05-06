@@ -24,6 +24,7 @@ app.use(
   cors({
     origin: [process.env.CLIENT_URL!, "http://192.168.10.11:5173"],
     credentials: true,
+    exposedHeaders: ["Set-Cookie"],
   })
 );
 app.use(express.json({ limit: "16kb" }));
