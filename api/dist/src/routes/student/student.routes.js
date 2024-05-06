@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.studentRouter = void 0;
+const express_1 = require("express");
+const student_controller_1 = require("./student.controller");
+const student_middleware_1 = require("./student.middleware");
+const middlewares_1 = require("../../middlewares");
+const router = (0, express_1.Router)();
+exports.studentRouter = router;
+router.get("/", student_middleware_1.isStudentAuthenticated, student_controller_1.getCourses);
+router.use(middlewares_1.checkAuth);
+router.get("/course/coursePoints", student_controller_1.getErolledCourseDetails);
+router.post("/course/enroll/freeCourse", student_controller_1.enrollInFreeCourse);
+router.put("/course/completeChapter", student_controller_1.onCompleteChapter);
+router.get("/course/myCompletedChapters", student_controller_1.getCompletedChapters);
+router.post("/course/applyCouponCode", student_middleware_1.couponCodeChecker, student_controller_1.applyCouponCode);
+router.get("/course/checkCoupon", student_controller_1.getCouponCode);
+router.post("/course/purchase", student_middleware_1.paymentChecker, student_controller_1.purchaseCourse);
+router.post("/course/paymentSucceed", student_controller_1.paymentSucceed);
+router.get("/course/myPurchasedCourses", student_controller_1.getMyPaidCourses);
+router.get("/paidCourse/:id/chapterTitles", student_controller_1.getMyPaidCourseChaptersTitles);
+router.post("/course/enroll/paidCourse", student_controller_1.enrollInPaidCourse);
+router.get("/paidCourse/content", student_controller_1.getPaidCourseContent);
+//# sourceMappingURL=student.routes.js.map
