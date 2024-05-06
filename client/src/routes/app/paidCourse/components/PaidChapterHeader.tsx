@@ -39,7 +39,7 @@ const PaidChapterHeader = () => {
   return (
     <div className="flex gap-2 w-full">
       <div className="min-w-[250px] border-r-2 h-[92.3vh]  overflow-y-scroll scrollbar-none max-[750px]:hidden">
-        {chapters?.map((chapter, index) => (
+        {chapters?.map((chapter) => (
           <div
             key={chapter._id}
             className={`w-[250px] flex items-center gap-2 border p-2 py-4 cursor-pointer ${
@@ -75,7 +75,7 @@ const PaidChapterHeader = () => {
             side={"left"}
             className="overflow-y-scroll scrollbar-none w-[250px] p-0 ">
             <SheetClose className="my-6 " />
-            {chapters?.map((chapter, index) => (
+            {chapters?.map((chapter) => (
               <div
                 key={chapter._id}
                 className={`w-[250px] flex items-center gap-2 border p-2 py-4 cursor-pointer ${
