@@ -15,7 +15,7 @@ const PaymentSuccessFull = () => {
   const courseId = searchParams.get("courseId");
 
   if (!id || !courseId) return <Navigate to={"/"} />;
-  const { data, isError } = useQuery({
+  const { isError } = useQuery({
     queryKey: ["paymentSuccessfull"],
     queryFn: async () => {
       const { data } = await studentApi.post("/course/paymentSucceed", {

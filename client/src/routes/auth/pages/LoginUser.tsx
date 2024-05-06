@@ -16,6 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import { authApi } from "@/lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { ServerError } from "@/types/general";
 
 export default function LoginUser() {
   const { toast } = useToast();
