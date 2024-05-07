@@ -99,8 +99,16 @@ const authenticateByResfreshToken = (0, express_async_handler_1.default)(async (
 exports.authenticateByResfreshToken = authenticateByResfreshToken;
 const logoutUser = (0, express_async_handler_1.default)(async (req, res, next) => {
     res
-        .clearCookie("refreshToken")
-        .clearCookie("accessToken")
+        .clearCookie("refreshToken", {
+        secure: true,
+        httpOnly: false,
+        sameSite: "none",
+    })
+        .clearCookie("accessToken", {
+        secure: true,
+        httpOnly: false,
+        sameSite: "none",
+    })
         .json({ message: "User logged out successfully" });
 });
 exports.logoutUser = logoutUser;

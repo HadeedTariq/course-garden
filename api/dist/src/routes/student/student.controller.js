@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPaidCourseContent = exports.enrollInPaidCourse = exports.getMyPaidCourseChaptersTitles = exports.getMyPaidCourses = exports.paymentSucceed = exports.purchaseCourse = exports.getCouponCode = exports.applyCouponCode = exports.getCompletedChapters = exports.onCompleteChapter = exports.enrollInFreeCourse = exports.getErolledCourseDetails = exports.getCourses = void 0;
+exports.getMyAllCourses = exports.getAllCoursesPoints = exports.getPaidCourseContent = exports.enrollInPaidCourse = exports.getMyPaidCourseChaptersTitles = exports.getMyPaidCourses = exports.paymentSucceed = exports.purchaseCourse = exports.getCouponCode = exports.applyCouponCode = exports.getCompletedChapters = exports.onCompleteChapter = exports.enrollInFreeCourse = exports.getErolledCourseDetails = exports.getCourses = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const course_model_1 = require("../teacher/course.model");
 const coursePoints_model_1 = require("../auth/coursePoints.model");
@@ -318,4 +318,24 @@ const getPaidCourseContent = (0, express_async_handler_1.default)(async (req, re
     res.status(200).json(course);
 });
 exports.getPaidCourseContent = getPaidCourseContent;
+const getAllCoursesPoints = (0, express_async_handler_1.default)(async (req, res, next) => {
+    const { user } = req.body;
+    const coursePoints = await coursePoints_model_1.CoursePoints.find({
+        user: new mongoose_1.default.Types.ObjectId(user.id),
+    }).select("points");
+    const totalPoints = coursePoints?.reduce((acc, detail) => {
+        acc += detail.points;
+        return acc;
+    }, 0);
+    res.status(200).json({ totalPoints });
+});
+exports.getAllCoursesPoints = getAllCoursesPoints;
+const getMyAllCourses = (0, express_async_handler_1.default)(async (req, res, next) => {
+    const { user } = req.body;
+    const enrolledCourses = await coursePoints_model_1.CoursePoints.find({
+        user: new mongoose_1.default.Types.ObjectId(user.id),
+    }).select("courseId");
+    res.status(200).json(enrolledCourses);
+});
+exports.getMyAllCourses = getMyAllCourses;
 //# sourceMappingURL=student.controller.js.map

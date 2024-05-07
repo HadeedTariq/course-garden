@@ -350,6 +350,30 @@ const getPaidCourseContent = asyncHandler(async (req, res, next) => {
   res.status(200).json(course);
 });
 
+const getAllCoursesPoints = asyncHandler(async (req, res, next) => {
+  const { user } = req.body;
+
+  const coursePoints = await CoursePoints.find({
+    user: new mongoose.Types.ObjectId(user.id),
+  }).select("points");
+
+  const totalPoints = coursePoints?.reduce((acc: any, detail: any) => {
+    acc += detail.points;
+    return acc;
+  }, 0);
+
+  res.status(200).json({ totalPoints });
+});
+
+const getMyAllCourses = asyncHandler(async (req, res, next) => {
+  const { user } = req.body;
+
+  const enrolledCourses = await CoursePoints.find({
+    user: new mongoose.Types.ObjectId(user.id),
+  }).select("courseId");
+  res.status(200).json(enrolledCourses);
+});
+
 export {
   getCourses,
   getErolledCourseDetails,
@@ -364,4 +388,6 @@ export {
   getMyPaidCourseChaptersTitles,
   enrollInPaidCourse,
   getPaidCourseContent,
+  getAllCoursesPoints,
+  getMyAllCourses,
 };

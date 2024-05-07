@@ -27,6 +27,9 @@ import DashboardHome from "./routes/app/teacher/components/DashboardHome";
 import TeacherCourses from "./routes/app/teacher/pages/TeacherCourses";
 import TeacherStats from "./routes/app/teacher/pages/TeacherStats";
 import TeacherCourseDetails from "./routes/app/teacher/pages/TeacherCourseDetails";
+import StudentDashboardSidebar from "./routes/app/student/components/StudentDashboardSidebar";
+import StudentDashboardHome from "./routes/app/student/pages/StudentDashboardHome";
+import StudentEnrolledCourses from "./routes/app/student/pages/StudentEnrolledCourses";
 
 function App() {
   const { theme } = useTheme();
@@ -94,6 +97,16 @@ function App() {
               element={<TeacherCourseDetails />}
             />
             <Route path="stats" element={<TeacherStats />} />
+          </Route>
+          <Route path="createCourse">
+            <Route index element={<CreateCourse />} />
+            <Route path=":id" element={<PublishCourse />} />
+          </Route>
+        </Route>
+        <Route path="student">
+          <Route path="dashboard" element={<StudentDashboardSidebar />}>
+            <Route index element={<StudentDashboardHome />} />
+            <Route path="courses" element={<StudentEnrolledCourses />} />
           </Route>
           <Route path="createCourse">
             <Route index element={<CreateCourse />} />

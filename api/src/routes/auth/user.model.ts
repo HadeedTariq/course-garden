@@ -10,7 +10,7 @@ export interface UserDocument extends Document {
   mobileNumber: string;
   country: string;
   password: string;
-  role: "student" | "teacher" | "admin";
+  role: "student" | "teacher" | "admin" | "pro";
   status: "member" | "pro";
   refreshToken: string;
   points: Types.ObjectId;

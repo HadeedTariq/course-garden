@@ -53,7 +53,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
     }
   };
   return (
-    <Card>
+    <Card className="h-fit">
       <CardHeader>
         <img src={course.thumbnail} className="w-full h-[200px] object-cover" />
       </CardHeader>

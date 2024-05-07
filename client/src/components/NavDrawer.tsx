@@ -45,6 +45,15 @@ export function NavDrawer() {
                   </Link>
                 )}
               </DrawerClose>
+              <DrawerClose asChild>
+                {(user.role === "student" || user.role === "pro") && (
+                  <Link
+                    className=" px-5 py-2.5 text-sm font-medium text-white transition font-ubuntu "
+                    to="/student/dashboard">
+                    Dashboard
+                  </Link>
+                )}
+              </DrawerClose>
               <p
                 className=" px-5 py-2.5 text-sm font-medium text-white transition font-ubuntu "
                 onClick={logout}>

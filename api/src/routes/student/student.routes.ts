@@ -3,10 +3,12 @@ import {
   applyCouponCode,
   enrollInFreeCourse,
   enrollInPaidCourse,
+  getAllCoursesPoints,
   getCompletedChapters,
   getCouponCode,
   getCourses,
   getErolledCourseDetails,
+  getMyAllCourses,
   getMyPaidCourseChaptersTitles,
   getMyPaidCourses,
   getPaidCourseContent,
@@ -37,5 +39,7 @@ router.get("/course/myPurchasedCourses", getMyPaidCourses);
 router.get("/paidCourse/:id/chapterTitles", getMyPaidCourseChaptersTitles);
 router.post("/course/enroll/paidCourse", enrollInPaidCourse);
 router.get("/paidCourse/content", getPaidCourseContent);
+router.get("/courses/allPoints", getAllCoursesPoints);
+router.get("/courses/all", getMyAllCourses);
 
 export { router as studentRouter };

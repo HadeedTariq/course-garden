@@ -21,4 +21,6 @@ router.get("/course/myPurchasedCourses", student_controller_1.getMyPaidCourses);
 router.get("/paidCourse/:id/chapterTitles", student_controller_1.getMyPaidCourseChaptersTitles);
 router.post("/course/enroll/paidCourse", student_controller_1.enrollInPaidCourse);
 router.get("/paidCourse/content", student_controller_1.getPaidCourseContent);
+router.get("/courses/allPoints", student_controller_1.getAllCoursesPoints);
+router.get("/courses/all", student_controller_1.getMyAllCourses);
 //# sourceMappingURL=student.routes.js.map

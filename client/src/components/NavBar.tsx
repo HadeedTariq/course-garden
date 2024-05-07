@@ -46,6 +46,13 @@ const NavBar = () => {
                         </Link>
                       </>
                     )}
+                    {(user.role === "student" || user.role === "pro") && (
+                      <Link
+                        className=" rounded-md bg-green-500 px-5 py-2.5 text-sm font-medium text-white transition font-ubuntu hover:bg-green-600"
+                        to="/student/dashboard">
+                        Dashboard
+                      </Link>
+                    )}
                     <Button variant={"destructive"} onClick={logout}>
                       Logout
                     </Button>

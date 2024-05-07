@@ -114,8 +114,16 @@ const authenticateByResfreshToken = asyncHandler(async (req, res, next) => {
 
 const logoutUser = asyncHandler(async (req, res, next) => {
   res
-    .clearCookie("refreshToken")
-    .clearCookie("accessToken")
+    .clearCookie("refreshToken", {
+      secure: true,
+      httpOnly: false,
+      sameSite: "none",
+    })
+    .clearCookie("accessToken", {
+      secure: true,
+      httpOnly: false,
+      sameSite: "none",
+    })
     .json({ message: "User logged out successfully" });
 });
 

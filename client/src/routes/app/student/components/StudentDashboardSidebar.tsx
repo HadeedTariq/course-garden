@@ -9,7 +9,7 @@ import {
 import { CircleChevronRight } from "lucide-react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
-const TeacherDashboardSidebar = () => {
+const StudentDashboardSidebar = () => {
   const { user } = useFullApp();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -20,7 +20,7 @@ const TeacherDashboardSidebar = () => {
       path: "",
     },
     {
-      name: "Courses",
+      name: "Enrolled Courses",
       path: "courses",
     },
     // {
@@ -28,9 +28,9 @@ const TeacherDashboardSidebar = () => {
     //   path: "stats",
     // },
   ];
-  console.log(pathname);
 
-  if (user?.role !== "teacher") return <Navigate to={"/"} />;
+  if (user?.role !== "student" && user?.role !== "pro")
+    return <Navigate to={"/"} />;
   return (
     <div className="flex gap-2 w-full">
       <div className="min-w-[250px] border-r-2 h-[92.3vh]  overflow-y-scroll scrollbar-none max-[750px]:hidden">
@@ -38,11 +38,11 @@ const TeacherDashboardSidebar = () => {
           <div
             key={index}
             onClick={() => {
-              navigate(`/teacher/dashboard/${header.path}`);
+              navigate(`/student/dashboard/${header.path}`);
             }}
             className={`w-[250px] flex items-center gap-2 border p-2 py-4 cursor-pointer
             ${
-              pathname === `/teacher/dashboard/${header.path}`
+              pathname === `/student/dashboard/${header.path}`
                 ? "dark:bg-gray-800  bg-gray-200 scale-105"
                 : ""
             }
@@ -51,16 +51,16 @@ const TeacherDashboardSidebar = () => {
             <p
               className="font-pt-serif"
               onClick={() => {
-                navigate(`/teacher/dashboard/${header.path}`);
+                navigate(`/student/dashboard/${header.path}`);
               }}>
               {header.name}
             </p>
           </div>
         ))}
       </div>
-      <div className="min-[700px]:hidden">
+      <div className="min-[750px]:hidden">
         <Sheet>
-          <SheetTrigger className="absolute left-0 ">
+          <SheetTrigger className="absolute left-0  top-36">
             <div className="bg-black p-[8px] rounded-sm">
               <CircleChevronRight size={22} />
             </div>
@@ -74,11 +74,11 @@ const TeacherDashboardSidebar = () => {
                 asChild
                 key={index}
                 onClick={() => {
-                  navigate(`/teacher/dashboard/${header.path}`);
+                  navigate(`/student/dashboard/${header.path}`);
                 }}
                 className={`w-[250px] flex items-center gap-2 border p-2 py-4 cursor-pointer
                 ${
-                  pathname === `/teacher/dashboard/${header.path}`
+                  pathname === `/student/dashboard/${header.path}`
                     ? "dark:bg-gray-800  bg-gray-200 scale-105"
                     : ""
                 }
@@ -94,4 +94,4 @@ const TeacherDashboardSidebar = () => {
   );
 };
 
-export default TeacherDashboardSidebar;
+export default StudentDashboardSidebar;

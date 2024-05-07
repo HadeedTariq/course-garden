@@ -14,7 +14,7 @@ interface User {
   username: string;
   email: string;
   status: string;
-  role: string;
+  role: "student" | "teacher" | "admin" | "pro";
   avatar: string;
 }
 interface ChapterType extends ChapterSchema {
