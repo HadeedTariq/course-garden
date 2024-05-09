@@ -22,4 +22,9 @@ const studentApi = axios.create({
   withCredentials: true,
 });
 
-export { authApi, teacherApi, chapterApi, studentApi };
+const playlistApi = axios.create({
+  baseURL: `${url}/playlist`,
+  withCredentials: true,
+});
+
+export { authApi, teacherApi, chapterApi, studentApi, playlistApi };

@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { Lock, Strikethrough } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { studentApi } from "@/lib/axios";
+import CreatePlaylist from "@/components/Playlist.create";
 
 interface CourseCardProps {
   course: PublishedCourse;
@@ -66,12 +67,21 @@ const CourseCard = ({ course }: CourseCardProps) => {
         <CardDescription>{course.description.slice(0, 100)}...</CardDescription>
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4">
-        <div className="flex items-center gap-2">
-          <img
-            src={course.teacher.avatar}
-            className="w-[25px] h-[25px] rounded-full"
-          />
-          <p>{course.teacher.username.toUpperCase()}</p>
+        <div className="flex items-center gap-2 justify-between w-full">
+          <div className="flex items-center gap-2">
+            <img
+              src={course.teacher.avatar}
+              className="w-[25px] h-[25px] rounded-full"
+            />
+            <p>{course.teacher.username.toUpperCase()}</p>
+          </div>
+          {user?.username && course.status !== "paid" && (
+            <CreatePlaylist courseId={course._id} />
+          )}
+          {course.status === "paid" &&
+            myPurchasedCourses?.includes(course._id) && (
+              <CreatePlaylist courseId={course._id} />
+            )}
         </div>
         <Button
           variant={"app"}

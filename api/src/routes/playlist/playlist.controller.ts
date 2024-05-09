@@ -25,4 +25,16 @@ const createPlaylist = asyncHandler(async (req, res, next) => {
   res.status(201).json({ message: "Playlist Created Successfully" });
 });
 
-export { createPlaylist };
+const getMyPlaylists = asyncHandler(async (req, res, next) => {
+  const { user } = req.body;
+
+  const myCreatedPlaylists = await Playlist.find({
+    user: user.id,
+  });
+
+  console.log(myCreatedPlaylists);
+
+  res.status(200).json(myCreatedPlaylists);
+});
+
+export { createPlaylist, getMyPlaylists };

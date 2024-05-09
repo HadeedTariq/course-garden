@@ -49,3 +49,11 @@ interface CourseRevenue {
   totalRevenue: string;
   monthlyRevenue: string;
 }
+
+interface PlaylistData {
+  _id: string;
+  name: string;
+  thumbnail: string;
+  user: string;
+  courses: string[];
+}
