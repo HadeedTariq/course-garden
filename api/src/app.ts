@@ -11,6 +11,7 @@ import { authRouter } from "./routes/auth/user.routes";
 import { teacherRouter } from "./routes/teacher/teacher.routes";
 import { chapterRouter } from "./routes/teacher/chapter.routes";
 import { studentRouter } from "./routes/student/student.routes";
+import { playlisRouter } from "./routes/playlist/playlist.routes";
 
 require("dotenv").config();
 
@@ -41,6 +42,7 @@ app.use("/auth", authRouter);
 app.use("/teacher", teacherRouter);
 app.use("/chapter", chapterRouter);
 app.use("/student", studentRouter);
+app.use("/playlist", playlisRouter);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
