@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { ListVideo, Loader } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,7 +21,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import {
   InvalidateQueryFilters,
@@ -32,6 +31,8 @@ import {
 import { playlistApi } from "@/lib/axios";
 import { ServerError } from "@/types/general";
 import { PlaylistData } from "@/routes/app/types/app";
+import UpdatePlaylist from "./UpdatePlaylist";
+import { Input } from "./ui/input";
 
 const FormSchema = z.object({
   name: z.string().min(4, {
@@ -95,6 +96,11 @@ const CreatePlaylist = ({ courseId }: CreatePlaylistProps) => {
       return data as PlaylistData[];
     },
   });
+
+  useEffect(() => {
+    setSelectedOption("");
+  }, [myPlaylists]);
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -118,19 +124,25 @@ const CreatePlaylist = ({ courseId }: CreatePlaylistProps) => {
                     id={playlist._id}
                     name="options"
                     value={playlist.name}
-                    checked={
-                      playlist.courses.includes(courseId) ||
-                      selectedOption === playlist.name
-                    }
+                    defaultChecked={playlist.courses.includes(courseId)}
+                    checked={selectedOption === playlist.name}
+                    readOnly={playlist.courses.includes(courseId)}
                     disabled={playlist.courses.includes(courseId)}
-                    className="form-radio h-3 w-5 text-indigo-600 disabled:text-orange-600 "
+                    className="form-radio h-3 w-5 text-indigo-600 disabled:text-orange-600"
+                    onClick={() => setSelectedOption(playlist.name)}
+                    onChange={() => {}}
                   />
                   <label
                     htmlFor={playlist._id}
-                    className="ml-2 text-[18px] font-ubuntu cursor-pointer text-gray-300"
-                    onClick={() => setSelectedOption(playlist.name)}>
+                    className="ml-2 text-[18px] font-ubuntu cursor-pointer dark:text-gray-300 disabled:cursor-not-allowed">
                     {playlist.name}
                   </label>
+                  {selectedOption === playlist.name && (
+                    <UpdatePlaylist
+                      courseId={courseId}
+                      playlistId={playlist._id}
+                    />
+                  )}
                 </div>
               </>
             ))}

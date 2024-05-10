@@ -1,4 +1,4 @@
-import { PublishedCourse } from "@/routes/app/types/app";
+import { PlaylistData, PublishedCourse } from "@/routes/app/types/app";
 import { User } from "@/types/general";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -10,6 +10,7 @@ export type FullAppState = {
   user: User | null;
   courses: PublishedCourse[];
   paidChapters: PublishedCourse["courseChapters"] | null;
+  playlists: PlaylistData[];
 };
 
 const initialState: FullAppState = {
@@ -18,6 +19,7 @@ const initialState: FullAppState = {
   user: null,
   courses: [],
   paidChapters: null,
+  playlists: [],
 };
 
 const fullAppReducer = createSlice({
@@ -40,9 +42,12 @@ const fullAppReducer = createSlice({
     ) => {
       state.paidChapters = payload;
     },
+    setPlaylists: (state, { payload }: { payload: PlaylistData[] }) => {
+      state.playlists = payload;
+    },
   },
 });
 
-export const { setTheme, setUser, setCourses, setPaidChapters } =
+export const { setTheme, setUser, setCourses, setPaidChapters, setPlaylists } =
   fullAppReducer.actions;
 export default fullAppReducer.reducer;

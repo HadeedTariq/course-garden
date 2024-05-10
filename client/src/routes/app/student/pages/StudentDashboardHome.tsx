@@ -30,7 +30,7 @@ const StudentDashboardHome = () => {
           </p>
         </div>
         <p className="font-ubuntu text-xl text-orange-500">
-          <span className="font-pt-serif text-[19px] text-white">
+          <span className="font-pt-serif text-[19px] dark:text-white text-black">
             Total Points:
           </span>{" "}
           {data?.totalPoints}

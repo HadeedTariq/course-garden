@@ -23,10 +23,10 @@ const StudentDashboardSidebar = () => {
       name: "Enrolled Courses",
       path: "courses",
     },
-    // {
-    //   name: "Stats",
-    //   path: "stats",
-    // },
+    {
+      name: "Playlists",
+      path: "playlists",
+    },
   ];
 
   if (user?.role !== "student" && user?.role !== "pro")
@@ -61,7 +61,7 @@ const StudentDashboardSidebar = () => {
       <div className="min-[750px]:hidden">
         <Sheet>
           <SheetTrigger className="absolute left-0  top-36">
-            <div className="bg-black p-[8px] rounded-sm">
+            <div className="bg-black p-[8px] text-white rounded-sm">
               <CircleChevronRight size={22} />
             </div>
           </SheetTrigger>

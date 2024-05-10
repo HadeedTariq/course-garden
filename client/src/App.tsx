@@ -30,6 +30,8 @@ import TeacherCourseDetails from "./routes/app/teacher/pages/TeacherCourseDetail
 import StudentDashboardSidebar from "./routes/app/student/components/StudentDashboardSidebar";
 import StudentDashboardHome from "./routes/app/student/pages/StudentDashboardHome";
 import StudentEnrolledCourses from "./routes/app/student/pages/StudentEnrolledCourses";
+import StudentPlaylists from "./routes/app/student/pages/StudentPlaylists";
+import WatchPlaylist from "./routes/app/student/pages/WatchPlaylist";
 
 function App() {
   const { theme } = useTheme();
@@ -107,6 +109,10 @@ function App() {
           <Route path="dashboard" element={<StudentDashboardSidebar />}>
             <Route index element={<StudentDashboardHome />} />
             <Route path="courses" element={<StudentEnrolledCourses />} />
+            <Route path="playlists">
+              <Route index element={<StudentPlaylists />} />
+              <Route path="watch/:playlistId" element={<WatchPlaylist />} />
+            </Route>
           </Route>
           <Route path="createCourse">
             <Route index element={<CreateCourse />} />

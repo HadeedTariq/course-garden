@@ -37,4 +37,30 @@ const getMyPlaylists = asyncHandler(async (req, res, next) => {
   res.status(200).json(myCreatedPlaylists);
 });
 
-export { createPlaylist, getMyPlaylists };
+const updatePlaylist = asyncHandler(async (req, res, next) => {
+  const { playlistId, courseId, user } = req.body;
+
+  if (!playlistId || !courseId) {
+    return next({
+      message: "Playlist id and video id is required",
+      status: 404,
+    });
+  }
+
+  const playlistUpdater = await Playlist.findOneAndUpdate(
+    {
+      _id: playlistId,
+      user: user.id,
+    },
+    {
+      $push: { courses: courseId },
+    }
+  );
+  if (playlistUpdater) {
+    res.status(201).json({ message: "Playlist updated successfully" });
+  } else {
+    return next({ status: 404 });
+  }
+});
+
+export { createPlaylist, getMyPlaylists, updatePlaylist };

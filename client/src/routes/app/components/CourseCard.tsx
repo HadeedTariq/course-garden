@@ -11,11 +11,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { useFullApp } from "@/hooks/useFullApp";
 import { toast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Lock, Strikethrough } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { studentApi } from "@/lib/axios";
-import CreatePlaylist from "@/components/Playlist.create";
+import CreatePlaylist from "@/components/Playlist.handler";
 
 interface CourseCardProps {
   course: PublishedCourse;
@@ -24,6 +24,7 @@ interface CourseCardProps {
 const CourseCard = ({ course }: CourseCardProps) => {
   const { user } = useFullApp();
   const navigate = useNavigate();
+  const { playlistId } = useParams();
 
   const { data: myPurchasedCourses } = useQuery({
     queryKey: [`getUserPurchasedCourse${course._id}`],
@@ -75,13 +76,12 @@ const CourseCard = ({ course }: CourseCardProps) => {
             />
             <p>{course.teacher.username.toUpperCase()}</p>
           </div>
-          {user?.username && course.status !== "paid" && (
+          {user?.username && course.status !== "paid" && !playlistId && (
             <CreatePlaylist courseId={course._id} />
           )}
           {course.status === "paid" &&
-            myPurchasedCourses?.includes(course._id) && (
-              <CreatePlaylist courseId={course._id} />
-            )}
+            myPurchasedCourses?.includes(course._id) &&
+            !playlistId && <CreatePlaylist courseId={course._id} />}
         </div>
         <Button
           variant={"app"}
