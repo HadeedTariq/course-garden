@@ -2,6 +2,7 @@ import { useFullApp } from "@/hooks/useFullApp";
 import { Navigate, useSearchParams } from "react-router-dom";
 
 import FreeCourseContent from "../components/FreeCourseContent";
+import FeedbackHandler from "../student/components/FeedbackHandler";
 
 const WatchCourse = () => {
   const { user, courses } = useFullApp();
@@ -14,6 +15,7 @@ const WatchCourse = () => {
   return (
     <>
       <FreeCourseContent course={course} />
+      <FeedbackHandler courseId={courseId} />
     </>
   );
 };

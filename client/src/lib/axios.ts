@@ -27,4 +27,16 @@ const playlistApi = axios.create({
   withCredentials: true,
 });
 
-export { authApi, teacherApi, chapterApi, studentApi, playlistApi };
+const feedbackApi = axios.create({
+  baseURL: `${url}/feedback`,
+  withCredentials: true,
+});
+
+export {
+  authApi,
+  teacherApi,
+  chapterApi,
+  studentApi,
+  playlistApi,
+  feedbackApi,
+};

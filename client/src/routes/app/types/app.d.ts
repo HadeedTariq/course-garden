@@ -13,7 +13,8 @@ interface Chapter {
 interface Feedback {
   _id: string;
   content: string;
-  user: User;
+  user: Pick<User, "username" | "avatar">;
+  replies: Feedback[];
 }
 
 interface PublishedCourse {

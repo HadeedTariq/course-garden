@@ -7,6 +7,8 @@ import { PublishedCourse } from "../../types/app";
 import LoadingBar from "@/components/LoadingBar";
 import { useDispatch } from "react-redux";
 import { setPaidChapters } from "@/reducers/fullAppReducer";
+import FeedbackHandler from "../../student/components/FeedbackHandler";
+import Feedbacks from "../../student/components/Feedbacks";
 
 const WatchPaidCourse = () => {
   const { user, courses } = useFullApp();
@@ -38,9 +40,11 @@ const WatchPaidCourse = () => {
   }
   if (isLoading) return <LoadingBar />;
   return (
-    <>
-      <PaidCourseContent course={course!} />{" "}
-    </>
+    <div className="flex flex-col gap-4 w-full">
+      <PaidCourseContent course={course!} />
+      <FeedbackHandler courseId={courseId} />
+      <Feedbacks courseId={courseId} />
+    </div>
   );
 };
 
