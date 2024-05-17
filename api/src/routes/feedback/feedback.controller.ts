@@ -46,12 +46,61 @@ const getCourseFeedbacks = asyncHandler(async (req, res, next) => {
         ],
       },
     },
+
     {
       $unwind: "$user",
     },
+
+    { $unwind: { path: "$replies", preserveNullAndEmptyArrays: true } },
+
+    {
+      $lookup: {
+        from: "users",
+        localField: "replies.user",
+        foreignField: "_id",
+        as: "replies.user",
+        pipeline: [
+          {
+            $project: {
+              username: 1,
+              avatar: 1,
+            },
+          },
+        ],
+      },
+    },
+
+    { $unwind: { path: "$replies.user", preserveNullAndEmptyArrays: true } },
+
+    {
+      $group: {
+        _id: "$_id",
+        content: { $first: "$content" },
+        user: { $first: "$user" },
+        courseId: { $first: "$courseId" },
+        replies: { $push: "$replies" },
+      },
+    },
   ]);
-  console.log(courseFeedbacks);
+
   res.status(200).json(courseFeedbacks);
 });
 
-export { createFeedback, getCourseFeedbacks };
+const createReply = asyncHandler(async (req, res, next) => {
+  const { commentId, user, content } = req.body;
+  if (!commentId) {
+    return next({ message: "Comment Id is required", status: 404 });
+  }
+
+  const createdReply = await Feedback.findByIdAndUpdate(commentId, {
+    $push: {
+      replies: {
+        user: user.id,
+        content: content,
+      },
+    },
+  });
+  res.status(201).json({ message: "Reply created successfully" });
+});
+
+export { createFeedback, getCourseFeedbacks, createReply };

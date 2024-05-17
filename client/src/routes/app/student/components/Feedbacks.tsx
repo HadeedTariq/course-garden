@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import RepliesHandler from "./RepliesHandler";
 
 interface FeedbacksProps {
   courseId: string;
@@ -38,20 +39,27 @@ const Feedbacks = ({ courseId }: FeedbacksProps) => {
           <Accordion type="single" collapsible>
             <AccordionItem value="replies">
               <AccordionTrigger>Replies</AccordionTrigger>
-
-              {feed.replies?.map((reply) => (
-                <AccordionContent key={reply._id}>
-                  <div className="flex items-center mb-2">
-                    <img
-                      src={reply.user.avatar}
-                      alt={reply.user.username}
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                    <span className="font-semibold">{reply.user.username}</span>
-                  </div>
-                  <p>{reply.content}</p>
-                </AccordionContent>
-              ))}
+              <AccordionContent>
+                <RepliesHandler commentId={feed._id} />
+              </AccordionContent>
+              {feed.replies?.map(
+                (reply) =>
+                  reply?._id && (
+                    <AccordionContent key={reply?._id}>
+                      <div className="flex items-center mb-2">
+                        <img
+                          src={reply?.user.avatar}
+                          alt={reply?.user.username}
+                          className="w-8 h-8 rounded-full mr-2"
+                        />
+                        <span className="font-semibold">
+                          {reply?.user.username}
+                        </span>
+                      </div>
+                      <p>{reply?.content}</p>
+                    </AccordionContent>
+                  )
+              )}
             </AccordionItem>
           </Accordion>
         </div>

@@ -38,37 +38,39 @@ const PaidChapterHeader = () => {
   });
   return (
     <div className="flex gap-2 w-full">
-      <div className="min-w-[250px] border-r-2 h-[92.3vh]  overflow-y-scroll scrollbar-none max-[750px]:hidden">
-        {chapters?.map((chapter) => (
-          <div
-            key={chapter._id}
-            className={`w-[250px] flex items-center gap-2 border p-2 py-4 cursor-pointer ${
-              currentChapterId === chapter._id
-                ? "dark:bg-gray-800  bg-gray-200 scale-105"
-                : ""
-            }`}>
-            {currentChapterId === chapter._id ? (
-              <CirclePlay />
-            ) : (
-              <CirclePause />
-            )}
-            <p
-              className="font-pt-serif"
-              onClick={() => {
-                navigate(
-                  `/paidCourse/chapter?courseId=${course._id}&chapterId=${chapter._id}`
-                );
-              }}>
-              {chapter.title}
-            </p>
-          </div>
-        ))}
+      <div className="relative min-w-[250px] max-[750px]:hidden">
+        <div className="w-[250px] fixed border-r-2 h-[92.3vh]  overflow-y-scroll scrollbar-none max-[750px]:hidden">
+          {chapters?.map((chapter) => (
+            <div
+              key={chapter._id}
+              className={`w-[250px] flex items-center gap-2 border p-2 py-4 cursor-pointer ${
+                currentChapterId === chapter._id
+                  ? "dark:bg-gray-800  bg-gray-200 scale-105"
+                  : ""
+              }`}>
+              {currentChapterId === chapter._id ? (
+                <CirclePlay />
+              ) : (
+                <CirclePause />
+              )}
+              <p
+                className="font-pt-serif"
+                onClick={() => {
+                  navigate(
+                    `/paidCourse/chapter?courseId=${course._id}&chapterId=${chapter._id}`
+                  );
+                }}>
+                {chapter.title}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="min-[700px]:hidden">
+      <div className="">
         <Sheet>
-          <SheetTrigger className="absolute right-0 top-[12.5px]">
+          <SheetTrigger className="min-[750px]:hidden">
             <div className="bg-black p-[8px] rounded-sm">
-              <Menu size={22} />
+              <Menu size={22} color="white" />
             </div>
           </SheetTrigger>
           <SheetContent

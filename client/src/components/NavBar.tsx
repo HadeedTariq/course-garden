@@ -72,12 +72,12 @@ const NavBar = () => {
                     </Link>
                   </>
                 )}
-                <div className={`${courseId ? "mx-6" : ""}`}>
+                <div>
                   <ThemeHandler />
                 </div>
               </div>
               <div className="min-[640px]:hidden flex items-center gap-2 mx-6">
-                {!courseId && <NavDrawer />}
+                <NavDrawer />
                 <ThemeHandler />
               </div>
             </div>

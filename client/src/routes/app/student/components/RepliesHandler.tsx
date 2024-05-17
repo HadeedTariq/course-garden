@@ -19,11 +19,11 @@ const FormSchema = z.object({
 });
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-interface FeedbackHandlerProps {
-  courseId: string;
+interface RepliesHandlerProps {
+  commentId: string;
 }
 
-function FeedbackHandler({ courseId }: FeedbackHandlerProps) {
+function RepliesHandler({ commentId }: RepliesHandlerProps) {
   const queryClient = useQueryClient();
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
@@ -32,11 +32,11 @@ function FeedbackHandler({ courseId }: FeedbackHandlerProps) {
     },
   });
   const { mutate: postFeedback, isPending } = useMutation({
-    mutationKey: ["postFeedback"],
+    mutationKey: ["postFeedbackReply"],
     mutationFn: async (feedback: FormSchemaType) => {
-      const { data } = await feedbackApi.post("/create", {
+      const { data } = await feedbackApi.post("/reply", {
         content: feedback.content,
-        courseId,
+        commentId,
       });
       return data;
     },
@@ -48,7 +48,7 @@ function FeedbackHandler({ courseId }: FeedbackHandlerProps) {
     },
     onSuccess: (data) => {
       toast({
-        title: data.message || "Feedback Crteated successfully",
+        title: data.message || "Reply Crteated successfully",
       });
       form.reset();
       queryClient.invalidateQueries(["feedbacks", 0] as InvalidateQueryFilters);
@@ -68,7 +68,7 @@ function FeedbackHandler({ courseId }: FeedbackHandlerProps) {
           className={`${
             form.formState.errors.content?.message ? "outline-red-400" : ""
           }`}
-          placeholder="Feedback"
+          placeholder="Reply"
           {...form.register("content")}
         />
         <Button type="submit" disabled={isPending}>
@@ -82,4 +82,4 @@ function FeedbackHandler({ courseId }: FeedbackHandlerProps) {
   );
 }
 
-export default FeedbackHandler;
+export default RepliesHandler;
