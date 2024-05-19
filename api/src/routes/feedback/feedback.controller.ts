@@ -6,7 +6,7 @@ const createFeedback = asyncHandler(async (req, res, next) => {
   const { user, content, courseId } = req.body;
 
   if (!courseId || !content) {
-    return next({ message: "Please fil all thye fields ", status: 404 });
+    return next({ message: "Please fil all the fields ", status: 404 });
   }
 
   const createdFeedback = await Feedback.create({

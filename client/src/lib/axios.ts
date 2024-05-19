@@ -32,6 +32,11 @@ const feedbackApi = axios.create({
   withCredentials: true,
 });
 
+const adminApi = axios.create({
+  baseURL: `${url}/admin`,
+  withCredentials: true,
+});
+
 export {
   authApi,
   teacherApi,
@@ -39,4 +44,5 @@ export {
   studentApi,
   playlistApi,
   feedbackApi,
+  adminApi,
 };

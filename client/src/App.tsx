@@ -32,6 +32,9 @@ import StudentDashboardHome from "./routes/app/student/pages/StudentDashboardHom
 import StudentEnrolledCourses from "./routes/app/student/pages/StudentEnrolledCourses";
 import StudentPlaylists from "./routes/app/student/pages/StudentPlaylists";
 import WatchPlaylist from "./routes/app/student/pages/WatchPlaylist";
+import AdminPanel from "./routes/app/admin/components/AdminPanel";
+import AdminHome from "./routes/app/admin/pages/AdminHome";
+import AdminNotification from "./routes/app/admin/pages/AdminNotification";
 
 function App() {
   const { theme } = useTheme();
@@ -136,6 +139,10 @@ function App() {
               </AuthProtector>
             }
           />
+        </Route>
+        <Route path="admin" element={<AdminPanel />}>
+          <Route index element={<AdminHome />} />
+          <Route path="notifications" element={<AdminNotification />} />
         </Route>
       </Route>
     </Routes>

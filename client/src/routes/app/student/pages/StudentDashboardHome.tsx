@@ -1,7 +1,10 @@
 import LoadingBar from "@/components/LoadingBar";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
 import { useFullApp } from "@/hooks/useFullApp";
-import { studentApi } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
+import { adminApi, studentApi } from "@/lib/axios";
+import { ServerError } from "@/types/general";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Navigate } from "react-router-dom";
 
 interface Points {
@@ -18,12 +21,33 @@ const StudentDashboardHome = () => {
     },
   });
 
+  const { mutate: requestTeacher, isPending } = useMutation({
+    mutationKey: ["requestForTeacher"],
+    mutationFn: async () => {
+      const { data } = await adminApi.post("/requestForTeacher", {
+        userId: user?.id,
+      });
+      return data;
+    },
+    onSuccess: (data) => {
+      toast({
+        title: data.message || "Request sended",
+      });
+    },
+    onError: (err: ServerError) => {
+      toast({
+        title: err.response.data.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   if (isLoading) return <LoadingBar />;
   if (isError) return <Navigate to={"/"} />;
   return (
     <div className="flex flex-col gap-2 w-full">
-      <div className="flex justify-between items-center border-b-2 w-full py-2">
-        <div className="flex items-center gap-2">
+      <div className="flex justify-between  items-center border-b-2 w-full py-2">
+        <div className="flex items-center max-[500px]:hidden gap-2">
           <img src={user?.avatar} className="w-12 h-12 rounded-full" />
           <p className="font-roboto-mono capitalize text-xl">
             {user?.username}
@@ -35,6 +59,12 @@ const StudentDashboardHome = () => {
           </span>{" "}
           {data?.totalPoints}
         </p>
+        <Button
+          variant={"payment"}
+          disabled={isPending}
+          onClick={() => requestTeacher()}>
+          Request Teacher
+        </Button>
       </div>
     </div>
   );

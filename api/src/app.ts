@@ -13,6 +13,7 @@ import { chapterRouter } from "./routes/teacher/chapter.routes";
 import { studentRouter } from "./routes/student/student.routes";
 import { playlisRouter } from "./routes/playlist/playlist.routes";
 import { feedbackRouter } from "./routes/feedback/feedback.routes";
+import { adminRouter } from "./routes/admin/admin.routes";
 
 require("dotenv").config();
 
@@ -45,6 +46,7 @@ app.use("/chapter", chapterRouter);
 app.use("/student", studentRouter);
 app.use("/playlist", playlisRouter);
 app.use("/feedback", feedbackRouter);
+app.use("/admin", adminRouter);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
