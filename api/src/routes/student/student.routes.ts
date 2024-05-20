@@ -9,12 +9,14 @@ import {
   getCourses,
   getErolledCourseDetails,
   getMyAllCourses,
+  getMyNotifications,
   getMyPaidCourseChaptersTitles,
   getMyPaidCourses,
   getPaidCourseContent,
   onCompleteChapter,
   paymentSucceed,
   purchaseCourse,
+  readNotification,
 } from "./student.controller";
 import {
   couponCodeChecker,
@@ -27,6 +29,8 @@ router.get("/", isStudentAuthenticated, getCourses);
 
 router.use(checkAuth);
 
+router.get("/notifications", getMyNotifications);
+router.post("/notification/read", readNotification);
 router.get("/course/coursePoints", getErolledCourseDetails);
 router.post("/course/enroll/freeCourse", enrollInFreeCourse);
 router.put("/course/completeChapter", onCompleteChapter);

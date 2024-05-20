@@ -1,11 +1,9 @@
 import LoadingBar from "@/components/LoadingBar";
-import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
 import { useFullApp } from "@/hooks/useFullApp";
-import { adminApi, studentApi } from "@/lib/axios";
-import { ServerError } from "@/types/general";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { studentApi } from "@/lib/axios";
+import { useQuery } from "@tanstack/react-query";
 import { Navigate } from "react-router-dom";
+import TeacherRequestHandler from "../components/TeacherRequestHandler";
 
 interface Points {
   totalPoints: number;
@@ -18,27 +16,6 @@ const StudentDashboardHome = () => {
     queryFn: async () => {
       const { data } = await studentApi.get("/courses/allPoints");
       return data as Points;
-    },
-  });
-
-  const { mutate: requestTeacher, isPending } = useMutation({
-    mutationKey: ["requestForTeacher"],
-    mutationFn: async () => {
-      const { data } = await adminApi.post("/requestForTeacher", {
-        userId: user?.id,
-      });
-      return data;
-    },
-    onSuccess: (data) => {
-      toast({
-        title: data.message || "Request sended",
-      });
-    },
-    onError: (err: ServerError) => {
-      toast({
-        title: err.response.data.message,
-        variant: "destructive",
-      });
     },
   });
 
@@ -59,12 +36,7 @@ const StudentDashboardHome = () => {
           </span>{" "}
           {data?.totalPoints}
         </p>
-        <Button
-          variant={"payment"}
-          disabled={isPending}
-          onClick={() => requestTeacher()}>
-          Request Teacher
-        </Button>
+        <TeacherRequestHandler userId={user?.id as string} />
       </div>
     </div>
   );

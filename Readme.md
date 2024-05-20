@@ -4,13 +4,16 @@ Course Garden is a full stack sass application built by using MERN stack.
 
 ## Features
 
-- ### Course Creation Functionality[Teacher only]
-- ### Buy Course
-- ### Add To Playlist Course
-- ### Coupon Code Functionality
-- ### Student and Teacher Dashboard
-- ### Points Functionality
-- ### Much More....
+- ###### Course Creation Functionality[Teacher only]
+- ###### Buy Course
+- ###### Add To Playlist Course
+- ###### Coupon Code Functionality
+- ###### Student and Teacher Dashboard
+- ###### Points Functionality
+- ###### FeedBack Functionality with Reply System
+- ###### Request To Admin To Become Instructor
+- ###### Notification Functionality
+- ###### Much More....
 
 ## LIVE URL
 

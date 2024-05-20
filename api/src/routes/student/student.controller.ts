@@ -4,6 +4,7 @@ import { CoursePoints } from "../auth/coursePoints.model";
 import mongoose from "mongoose";
 import { PendingBuyer } from "./pendingBuyer.model";
 import { Payment } from "../teacher/payments.model";
+import { Notification } from "../admin/notification.model";
 
 const getCourses = asyncHandler(async (req, res, next) => {
   const { category, price, status } = req.query;
@@ -195,6 +196,28 @@ const getCouponCode = asyncHandler(async (req, res, next) => {
   } else {
     next({ status: 404, message: "No coupon code found" });
   }
+});
+
+const getMyNotifications = asyncHandler(async (req, res, next) => {
+  const { user } = req.body;
+
+  const userNotifications = await Notification.find({
+    user: user.id,
+  });
+
+  res.status(200).json(userNotifications);
+});
+
+const readNotification = asyncHandler(async (req, res, next) => {
+  const { notificationId } = req.body;
+  if (!notificationId) {
+    return next({ message: "Notification Id  required", status: 404 });
+  }
+  await Notification.findByIdAndUpdate(notificationId, {
+    read: true,
+  });
+
+  res.status(201).json({ message: "Notification readed" });
 });
 
 const purchaseCourse = asyncHandler(async (req, res, next) => {
@@ -390,4 +413,6 @@ export {
   getPaidCourseContent,
   getAllCoursesPoints,
   getMyAllCourses,
+  getMyNotifications,
+  readNotification,
 };

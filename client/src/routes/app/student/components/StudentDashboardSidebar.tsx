@@ -27,6 +27,10 @@ const StudentDashboardSidebar = () => {
       name: "Playlists",
       path: "playlists",
     },
+    {
+      name: "Notifications",
+      path: "notifications",
+    },
   ];
 
   if (user?.role !== "student" && user?.role !== "pro")

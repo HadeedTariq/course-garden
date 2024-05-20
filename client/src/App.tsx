@@ -35,6 +35,7 @@ import WatchPlaylist from "./routes/app/student/pages/WatchPlaylist";
 import AdminPanel from "./routes/app/admin/components/AdminPanel";
 import AdminHome from "./routes/app/admin/pages/AdminHome";
 import AdminNotification from "./routes/app/admin/pages/AdminNotification";
+import StudentNotifications from "./routes/app/student/pages/StudentNotifications";
 
 function App() {
   const { theme } = useTheme();
@@ -116,10 +117,7 @@ function App() {
               <Route index element={<StudentPlaylists />} />
               <Route path="watch/:playlistId" element={<WatchPlaylist />} />
             </Route>
-          </Route>
-          <Route path="createCourse">
-            <Route index element={<CreateCourse />} />
-            <Route path=":id" element={<PublishCourse />} />
+            <Route path="notifications" element={<StudentNotifications />} />
           </Route>
         </Route>
         <Route path="auth">
