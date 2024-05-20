@@ -54,6 +54,15 @@ export function NavDrawer() {
                   </Link>
                 )}
               </DrawerClose>
+              <DrawerClose asChild>
+                {user.role === "admin" && (
+                  <Link
+                    className=" rounded-md bg-green-500 px-5 py-2.5 text-sm font-medium text-white transition font-ubuntu hover:bg-green-600"
+                    to="/admin/">
+                    Dashboard
+                  </Link>
+                )}
+              </DrawerClose>
               <p
                 className=" px-5 py-2.5 text-sm font-medium text-white transition font-ubuntu "
                 onClick={logout}>
