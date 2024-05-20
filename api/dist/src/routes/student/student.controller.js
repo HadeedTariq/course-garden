@@ -3,13 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMyAllCourses = exports.getAllCoursesPoints = exports.getPaidCourseContent = exports.enrollInPaidCourse = exports.getMyPaidCourseChaptersTitles = exports.getMyPaidCourses = exports.paymentSucceed = exports.purchaseCourse = exports.getCouponCode = exports.applyCouponCode = exports.getCompletedChapters = exports.onCompleteChapter = exports.enrollInFreeCourse = exports.getErolledCourseDetails = exports.getCourses = void 0;
+exports.readNotification = exports.getMyNotifications = exports.getMyAllCourses = exports.getAllCoursesPoints = exports.getPaidCourseContent = exports.enrollInPaidCourse = exports.getMyPaidCourseChaptersTitles = exports.getMyPaidCourses = exports.paymentSucceed = exports.purchaseCourse = exports.getCouponCode = exports.applyCouponCode = exports.getCompletedChapters = exports.onCompleteChapter = exports.enrollInFreeCourse = exports.getErolledCourseDetails = exports.getCourses = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const course_model_1 = require("../teacher/course.model");
 const coursePoints_model_1 = require("../auth/coursePoints.model");
 const mongoose_1 = __importDefault(require("mongoose"));
 const pendingBuyer_model_1 = require("./pendingBuyer.model");
 const payments_model_1 = require("../teacher/payments.model");
+const notification_model_1 = require("../admin/notification.model");
 const getCourses = (0, express_async_handler_1.default)(async (req, res, next) => {
     const { category, price, status } = req.query;
     const coursePipeline = [
@@ -182,6 +183,25 @@ const getCouponCode = (0, express_async_handler_1.default)(async (req, res, next
     }
 });
 exports.getCouponCode = getCouponCode;
+const getMyNotifications = (0, express_async_handler_1.default)(async (req, res, next) => {
+    const { user } = req.body;
+    const userNotifications = await notification_model_1.Notification.find({
+        user: user.id,
+    });
+    res.status(200).json(userNotifications);
+});
+exports.getMyNotifications = getMyNotifications;
+const readNotification = (0, express_async_handler_1.default)(async (req, res, next) => {
+    const { notificationId } = req.body;
+    if (!notificationId) {
+        return next({ message: "Notification Id  required", status: 404 });
+    }
+    await notification_model_1.Notification.findByIdAndUpdate(notificationId, {
+        read: true,
+    });
+    res.status(201).json({ message: "Notification readed" });
+});
+exports.readNotification = readNotification;
 const purchaseCourse = (0, express_async_handler_1.default)(async (req, res, next) => {
     const { session } = req.body;
     res.status(200).json({ id: session.id });

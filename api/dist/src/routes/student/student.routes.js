@@ -9,6 +9,8 @@ const router = (0, express_1.Router)();
 exports.studentRouter = router;
 router.get("/", student_middleware_1.isStudentAuthenticated, student_controller_1.getCourses);
 router.use(middlewares_1.checkAuth);
+router.get("/notifications", student_controller_1.getMyNotifications);
+router.post("/notification/read", student_controller_1.readNotification);
 router.get("/course/coursePoints", student_controller_1.getErolledCourseDetails);
 router.post("/course/enroll/freeCourse", student_controller_1.enrollInFreeCourse);
 router.put("/course/completeChapter", student_controller_1.onCompleteChapter);
