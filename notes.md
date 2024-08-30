@@ -1,0 +1,3 @@
+->In postgres only primary key can become foreign key 
+->For making another column of a table primary key then we need to drop primary key from existing column
+->Postgres not support references for postgres array

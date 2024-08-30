@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../auth/user.model";
 import { Course } from "./course.model";
+import { pool } from "../../app";
 
 export const isTeacher = async (
   req: Request,
@@ -22,17 +22,16 @@ export const isTeacher = async (
     return next({ message: "Invalid Access Token", status: 404 });
   }
 
-  const isValidateTeacher = await User.findOne({
-    _id: user.id,
-    role: "teacher",
-  });
-  if (!isValidateTeacher) {
+  const { rows: isValidateTeacher } = await pool.query(
+    "select * from users where userid=$1 and userrole=$2",
+    [user.id, "teacher"]
+  );
+  if (!isValidateTeacher[0]) {
     return next({
       message: "Only teacher can perform this action",
       status: 404,
     });
   }
-
   req.body.user = user;
   next();
 };

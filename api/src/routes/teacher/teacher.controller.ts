@@ -3,6 +3,7 @@ import { CouponCode, Course } from "./course.model";
 import mongoose from "mongoose";
 import { Chapter } from "./chapter.model";
 import { Payment } from "./payments.model";
+import { pool } from "../../app";
 
 const createCourse = asyncHandler(async (req, res, next) => {
   const {
@@ -11,6 +12,7 @@ const createCourse = asyncHandler(async (req, res, next) => {
     thumbnail,
     couponCode: { coupon, quantity },
     category,
+    user,
   } = req.body;
 
   if (
@@ -23,28 +25,41 @@ const createCourse = asyncHandler(async (req, res, next) => {
   ) {
     return next({ status: 404, message: "Please fill all the fields" });
   }
-
-  const createdCouponCode = await CouponCode.create({
-    coupon,
-    quantity,
-  });
-
-  const createdCourse = await Course.create({
-    title,
-    description,
-    thumbnail,
-    creator: req.body.user.id,
-    couponCode: createdCouponCode._id,
-    category,
-  });
-  createdCouponCode.courseId = createdCourse._id;
-  await createdCouponCode.save();
-  res.status(201).json(createdCourse);
+  const { rows: createdCourse } = await pool.query(
+    `
+    INSERT INTO course (
+      title,
+      description,
+      thumbnail,
+      status,
+      category,
+      creator
+    ) VALUES (
+      $1, $2, $3, $4, $5, $6
+    )
+      returning *;
+  `,
+    [title, description, thumbnail, "free", category, user.id]
+  );
+  await pool.query(
+    `
+    INSERT INTO couponcode (
+     coupon,
+     quantity,
+     courseid
+    ) VALUES (
+      $1, $2,$3
+    )
+      
+  `,
+    [coupon, quantity, createdCourse[0].courseid]
+  );
+  res.status(201).json("Course created successfully");
 });
 
 const deleteCourse = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  if (!id || id.length !== 24) {
+  if (!id) {
     return next({ status: 404, message: "Course Id is required" });
   }
 

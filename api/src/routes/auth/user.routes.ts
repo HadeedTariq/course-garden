@@ -2,9 +2,9 @@ import { Router } from "express";
 import { existedUser } from "./user.middleware";
 import {
   authenticateByResfreshToken,
+  logoutUser,
   authenticateUser,
   loginUser,
-  logoutUser,
   registerUser,
 } from "./user.controller";
 import { checkAuth } from "../../middlewares";

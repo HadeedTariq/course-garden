@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
-import PhoneNumber from "libphonenumber-js";
 import jwt from "jsonwebtoken";
-import { User } from "./user.model";
+import { pool } from "../../app";
+import bcrypt from "bcrypt";
 
 const registerUser = asyncHandler(async (req, res, next) => {
   const { username, email, password, qualification, mobileNumber, country } =
@@ -16,17 +16,12 @@ const registerUser = asyncHandler(async (req, res, next) => {
   ) {
     return next({ message: "Please fill all the fields", status: 404 });
   }
-  const phoneNumber = PhoneNumber(mobileNumber, country.toUpperCase());
+  const hashedPassword = await bcrypt.hash(password, 12);
+  await pool.query(
+    "INSERT INTO users (username, email, user_password, qualification, mobilenumber, country) VALUES ($1, $2, $3, $4, $5, $6)",
+    [username, email, hashedPassword, qualification, mobileNumber, country]
+  );
 
-  if (!phoneNumber?.isValid()) {
-    return next({
-      message: "Invalid Mobile Number",
-      description: "This phone number doesn't match to your country code",
-      status: 404,
-    });
-  }
-
-  await User.create(req.body);
   res.status(201).json({ message: "User registered successfully" });
 });
 
@@ -35,22 +30,38 @@ const loginUser = asyncHandler(async (req, res, next) => {
   if (!email || !password) {
     return next({ status: 404, message: "Please fill all the fields" });
   }
-
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    return next({ status: 404, message: "User not found" });
+  const { rows } = await pool.query("select * from users where email=$1", [
+    email,
+  ]);
+  if (!rows[0]) {
+    return next({ status: 404, message: "User does't exist" });
   }
-
-  const isPasswordCorrect = await user.isPasswordCorrect(password);
+  const isPasswordCorrect = await bcrypt.compare(
+    password,
+    rows[0].user_password
+  );
+  console.log(rows[0]);
 
   if (!isPasswordCorrect) {
-    return next({ status: 404, message: "Incorrect Credentials" });
+    return next({ status: 404, message: "Incorrect password" });
   }
-  const { accessToken, refreshToken } = user.generateAccessAndRefreshToken();
-  user.refreshToken = refreshToken;
-  await user.save({ validateBeforeSave: false });
-
+  const refreshToken = jwt.sign(
+    {
+      id: rows[0].userid,
+    },
+    process.env.JWT_REFRESH_TOKEN_SECRET as string
+  );
+  await pool.query("update users set refreshToken=$1 where userid=$2", [
+    refreshToken,
+    rows[0].userid,
+  ]);
+  const accessToken = jwt.sign(
+    {
+      id: rows[0].userid,
+      username: rows[0].username,
+    },
+    process.env.JWT_ACCESS_TOKEN_SECRET as string
+  );
   res
     .cookie("accessToken", accessToken, {
       secure: true,
@@ -61,9 +72,11 @@ const loginUser = asyncHandler(async (req, res, next) => {
       secure: true,
       httpOnly: false,
       sameSite: "none",
+    })
+    .status(201)
+    .json({
+      message: "User logged in successfully",
     });
-
-  res.status(200).json({ message: "User logged in successfully" });
 });
 
 const authenticateUser = asyncHandler(async (req, res, next) => {
@@ -85,15 +98,31 @@ const authenticateByResfreshToken = asyncHandler(async (req, res, next) => {
     return next({ message: "Invalid Refresh Token", status: 404 });
   }
 
-  const user = await User.findById(id);
+  const { rows: user } = await pool.query(
+    "select * from users where userid=$1",
+    [id]
+  );
 
-  if (!user) {
+  if (!user[0]) {
     return next({ status: 404, message: "User not found" });
   }
-
-  const { accessToken, refreshToken } = user.generateAccessAndRefreshToken();
-  user.refreshToken = refreshToken;
-  await user.save({ validateBeforeSave: false });
+  const accessToken = jwt.sign(
+    {
+      id: user[0].userid,
+      username: user[0].username,
+    },
+    process.env.JWT_ACCESS_TOKEN_SECRET as string
+  );
+  const refreshToken = jwt.sign(
+    {
+      id: user[0].userid,
+    },
+    process.env.JWT_REFRESH_TOKEN_SECRET as string
+  );
+  await pool.query("update users set refreshToken=$1 where userid=$2", [
+    refreshToken,
+    user[0].userid,
+  ]);
 
   res
     .cookie("accessToken", accessToken, {

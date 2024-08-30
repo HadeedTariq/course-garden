@@ -17,7 +17,7 @@ import { adminRouter } from "./routes/admin/admin.routes";
 
 require("dotenv").config();
 
-connectToDb(process.env.DB_URI!);
+export const pool = connectToDb();
 
 const app = express();
 
@@ -42,11 +42,11 @@ app.get<{}, MessageResponse>("/", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/teacher", teacherRouter);
-app.use("/chapter", chapterRouter);
-app.use("/student", studentRouter);
-app.use("/playlist", playlisRouter);
-app.use("/feedback", feedbackRouter);
-app.use("/admin", adminRouter);
+// app.use("/chapter", chapterRouter);
+// app.use("/student", studentRouter);
+// app.use("/playlist", playlisRouter);
+// app.use("/feedback", feedbackRouter);
+// app.use("/admin", adminRouter);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
